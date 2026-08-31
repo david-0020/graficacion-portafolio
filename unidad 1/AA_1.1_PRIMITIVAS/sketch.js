@@ -8,10 +8,8 @@ function draw() {
   // Fondo espacial oscuro
   background(15, 20, 40); 
   
-  // ----------------------------------------------------
-  // REQUISITO: Al menos un triángulo (triangle)
   // Cuello de la camiseta (forma un triángulo invertido)
-  // ----------------------------------------------------
+  
   // e.b. Asigna colores de relleno con fill(r, g, b)
   fill(255, 255, 255); // Blanco
   // e.c. Define colores y grosores de los bordes
@@ -20,17 +18,12 @@ function draw() {
   triangle(80, 20, 20, 20, 20, 95);
   triangle(100, 70, 22, 33, 80)
 
-  // ----------------------------------------------------
-  // REQUISITO: Al menos dos rectángulos o cuadrados (rect)
   // 1. Camiseta amarilla típica de Morty
-  // ----------------------------------------------------
   fill(245, 230, 80); // Amarillo Morty
   rect(130, 270, 140, 100); 
 
-  // ----------------------------------------------------
-  // REQUISITO: Al menos dos círculos o elipses (ellipse / circle)
   // 1. Cabeza redonda de Morty
-  // ----------------------------------------------------
+ 
   fill(250, 215, 180); // Tono de piel
   ellipse(200, 180, 140, 140); // Cabeza
 
@@ -46,10 +39,7 @@ function draw() {
   circle(175, 170, 4);
   circle(225, 170, 4);
 
-  // ----------------------------------------------------
-  // REQUISITO: Al menos dos líneas (line)
   // 1. Ceja izquierda (Expresión de preocupación/sorpresa)
-  // ----------------------------------------------------
   stroke(0, 0, 0);
   strokeWeight(3);
   line(160, 148, 185, 153);
@@ -61,10 +51,7 @@ function draw() {
   strokeWeight(2);
   line(185, 220, 215, 220);
 
-  // ----------------------------------------------------
-  // REQUISITO: Más rectángulos/cuadrados para complementar
   // 2. Cabello castaño (Estilo pixelado/geométrico arriba de la cabeza)
-  // ----------------------------------------------------
   fill(160, 110, 65); // Marrón para el cabello
   noStroke();
   rect(140, 95, 120, 30);  // Parte superior del cabello
