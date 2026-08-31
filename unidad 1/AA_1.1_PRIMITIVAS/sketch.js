@@ -10,7 +10,6 @@ function draw() {
   
   // Cuello de la camiseta (forma un triángulo invertido)
   
-  // e.b. Asigna colores de relleno con fill(r, g, b)
   fill(255, 255, 255); // Blanco
   // e.c. Define colores y grosores de los bordes
   stroke(0, 0, 0);
