@@ -1,0 +1,93 @@
+function setup() {
+  createCanvas(400, 600); // Lienzo proporcional a la obra
+}
+
+function draw() {
+  background(20, 45, 85); // Azul de fondo
+  
+  //  CIELO Y LUNA (ESFERAS/OJOS) 
+  noStroke();
+  
+  // Ojo grande derecho
+  fill(225, 175, 55); // Amarillo cálido
+  ellipse(320, 110, 110, 110);
+  fill(30, 25, 20); // Pupila
+  ellipse(320, 110, 20, 50);
+
+  // Ojos pequeños en el cielo 
+  fill(210, 160, 60);
+  ellipse(80, 50, 45, 45);
+  ellipse(180, 45, 40, 40);
+  ellipse(260, 40, 35, 35);
+  ellipse(110, 140, 50, 50);
+  ellipse(220, 140, 45, 45);
+  ellipse(110, 290, 55, 55);
+  ellipse(200, 360, 45, 45);
+
+  // Pupilas simples para los ojos del cielo
+  fill(30, 25, 20);
+  ellipse(80, 50, 10, 25);
+  ellipse(180, 45, 8, 20);
+  ellipse(260, 40, 8, 18);
+  ellipse(110, 140, 12, 25);
+  ellipse(220, 140, 10, 22);
+  ellipse(110, 290, 12, 28);
+  ellipse(200, 360, 10, 22);
+
+  // Ojos alargados centrales
+  fill(200, 160, 80);
+  ellipse(180, 200, 110, 35);
+  ellipse(240, 260, 100, 30);
+  fill(30, 25, 20);
+  ellipse(180, 200, 15, 25);
+  ellipse(240, 260, 12, 22);
+
+  //  MONTAÑAS Y FONDO 
+  fill(120, 70, 35); // Marrón / Tierra
+  triangle(0, 380, 150, 330, 250, 420);
+  triangle(180, 410, 320, 340, 400, 430);
+
+  //  PUENTE Y BARANDAL
+  stroke(130, 75, 30); // Color café madera
+  strokeWeight(12);
+  line(0, 400, 250, 600); // Diagonal inferior del puente
+  line(0, 340, 400, 530); // Barandal superior
+  line(0, 370, 400, 560); // Barandal medio
+
+
+  //  GIRASOLES DERECHA 
+  noStroke();
+  fill(215, 140, 20); // Amarillo girasol
+  ellipse(380, 510, 60, 60);
+  ellipse(300, 580, 75, 75);
+  ellipse(370, 600, 70, 70);
+  
+  // Centro de los girasoles
+  fill(70, 40, 15);
+  ellipse(380, 510, 25, 25);
+  ellipse(300, 580, 30, 30);
+  ellipse(370, 600, 28, 28);
+
+  //  FIGURA CENTRAL 
+  // Cuerpo 
+  fill(35, 45, 45); // Túnica oscura
+  rect(155, 520, 90, 80, 20);
+
+  // Manos sosteniendo la cabeza
+  fill(180, 120, 50);
+  ellipse(160, 490, 25, 70);
+  ellipse(240, 490, 25, 70);
+
+  // Cabeza (Gran Ojo)
+  fill(190, 135, 60); // Tono ocre piel
+  ellipse(200, 450, 110, 110);
+  
+  // Pupila del personaje
+  fill(30, 25, 20);
+  ellipse(200, 440, 25, 50);
+
+  // SILUETAS DEL FONDO (IZQUIERDA)
+  fill(30, 40, 45);
+  ellipse(15, 460, 40, 80);
+  ellipse(45, 490, 35, 90);
+}
