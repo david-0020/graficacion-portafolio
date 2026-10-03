@@ -1,0 +1,125 @@
+let angulo = 0;
+function setup() {
+  createCanvas(750, 300);
+  angleMode(DEGREES);
+}
+
+function draw() {
+  background(240);
+
+  push();
+  translate(80, 160);
+  scale(0.6);
+  rotate(-10);
+  dibujarPollo(1);
+  pop();
+
+  push();
+  translate(220, 160);
+  scale(0.9);
+  rotate(5);
+  dibujarPollo(2);
+  pop();
+
+  push();
+  translate(370, 160);
+  scale(1.3);
+  rotate(-5);
+  dibujarPollo(3);
+  pop();
+
+  push();
+  translate(520, 160);
+  scale(1.7);
+  rotate(0);
+  dibujarPollo(4);
+  pop();
+
+  push();
+  translate(660, 160);
+  scale(1.6);
+  rotate(8);
+  dibujarPollo(5);
+  pop();
+}
+
+function dibujarPollo(etapa) {
+  ellipseMode(CENTER);
+  
+  let colorPlumas;
+  let colorCresta;
+  let tamanoCresta = 0;
+
+  if (etapa  1) {
+    colorPlumas = color(255, 255, 200);
+    colorCresta = color(255, 255, 200);
+  } else if (etapa  2) {
+    colorPlumas = color(255, 220, 0);
+    colorCresta = color(255, 120, 120);
+    tamanoCresta = 6;
+  } else if (etapa  3) {
+    colorPlumas = color(255, 180, 50);
+    colorCresta = color(255, 0, 0);
+    tamanoCresta = 12;
+  } else if (etapa  4) {
+    colorPlumas = color(245, 245, 245);
+    colorCresta = color(200, 0, 0);
+    tamanoCresta = 22;
+  } else if (etapa  5) {
+    colorPlumas = color(160, 160, 160);
+    colorCresta = color(130, 40, 40);
+    tamanoCresta = 18;
+  }
+
+  stroke(255, 140, 0);
+  strokeWeight(2);
+  line(-8, 15, -8, 28);
+  line(-8, 28, -13, 31);
+  line(-8, 28, -3, 31);
+  line(8, 15, 8, 28);
+  line(8, 28, 3, 31);
+  line(8, 28, 13, 31);
+
+  if (tamanoCresta > 0) {
+    noStroke();
+    fill(colorCresta);
+    ellipse(0, -22, tamanoCresta, tamanoCresta);
+    if (etapa >= 4) {
+      ellipse(-8, -19, tamanoCresta * 0.7, tamanoCresta * 0.7);
+      ellipse(8, -19, tamanoCresta * 0.7, tamanoCresta * 0.7);
+    }
+  }
+
+  noStroke();
+  fill(colorPlumas);
+  ellipse(0, 0, 45, 45);
+
+  fill(0);
+  if (etapa 5) {
+    stroke(50);
+    strokeWeight(1.5);
+    noFill();
+    ellipse(-10, -4, 9, 9);
+    ellipse(10, -4, 9, 9);
+    line(-5, -4, 5, -4);
+    fill(0);
+    noStroke();
+    ellipse(-10, -4, 3, 3);
+    ellipse(10, -4, 3, 3);
+  } else {
+    ellipse(-10, -4, 5, 5);
+    ellipse(10, -4, 5, 5);
+  }
+
+  fill(255, 120, 0);
+  noStroke();
+  triangle(-6, 3, 6, 3, 0, 13);
+
+  if (etapa  5) {
+    stroke(120, 70, 30);
+    strokeWeight(3);
+    noFill();
+    line(20, 5, 20, 31);
+    arc(16, 5, 8, 8, 180, 360);
+  }
+}
