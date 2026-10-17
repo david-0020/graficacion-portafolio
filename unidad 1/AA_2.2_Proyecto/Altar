@@ -1,0 +1,374 @@
+// Variables de interactividad
+let velasEncendidas = true;
+let intensidadLuz = 255;
+let petalosSuelo = [];
+let floresCayendo = [];
+
+function setup() {
+  // Entorno: Lienzo responsivo a toda la pantalla
+  createCanvas(windowWidth, windowHeight);
+  
+  // Generar pétalos estáticos para el suelo
+  for (let i = 0; i < 80; i++) {
+    petalosSuelo.push({
+      x: random(-300, 300),
+      y: random(30, 150),
+      tam: random(5, 12)
+    });
+  }
+
+  // Generar flores de cempasúchil cayendo continuamente
+  for (let i = 0; i < 35; i++) {
+    floresCayendo.push({
+      x: random(width),
+      y: random(-height, 0),
+      velocidadY: random(1, 2.5),
+      velocidadX: random(-0.5, 0.5),
+      tamano: random(14, 22),
+      rotacion: random(TWO_PI),
+      velocidadRotacion: random(-0.03, 0.03),
+      oscilacion: random(100)
+    });
+  }
+}
+
+function draw() {
+  let auraX = map(mouseX, 0, width, -50, 50);
+  background(20, 10, 30); // Fondo oscuro tradicional
+  
+  // Luz de fondo suave que sigue al mouse
+  noStroke();
+  fill(80, 30, 100, 100);
+  ellipse(width / 2 + auraX, height / 2, width * 0.8, height * 0.8);
+
+  // --- LLUVIA DE FLORES DE CEMPASÚCHIL ---
+  dibujarFloresCayendo();
+
+  // Trasladamos el origen al centro inferior para construir el altar
+  push();
+  translate(width / 2, height / 2 + 150);
+
+  // El camino de pétalos en el suelo
+  dibujarCaminoPetalos();
+
+  dibujarEscalones();
+  
+  // --- ELEMENTOS DEL NIVEL 3 (Superior) ---
+  dibujarRetrato(0, -250);
+  dibujarPanDeMuerto(-60, -200);
+  dibujarCopal(70, -210);
+  
+  // --- ELEMENTOS DEL NIVEL 2 (Medio) ---
+  dibujarVela(-140, -90, color(255, 50, 150)); // Vela Rosa Mexicano
+  dibujarVela(140, -90, color(0, 200, 220));   // Vela Turquesa
+  dibujarTequila(-60, -100);
+  dibujarVasoAgua(60, -95);
+  
+  // --- ELEMENTOS DEL NIVEL 1 (Inferior / Suelo) ---
+  dibujarCalaveraTradicional(0, -30);
+  dibujarCruzSal(-90, -15);
+  
+  // Velas adicionales de colores en la base
+  dibujarVela(-210, -10, color(150, 50, 220));  // Vela Morada
+  dibujarVela(-110, -10, color(255, 140, 0));   // Vela Naranja
+  dibujarVela(110, -10, color(50, 200, 100));   // Vela Verde
+  dibujarVela(210, -10, color(255, 220, 0));   // Vela Amarilla
+
+  // Flores de Cempasúchil en la base
+  dibujarFlorCempasuchil(-160, -10);
+  dibujarFlorCempasuchil(160, -10);
+  dibujarFlorCempasuchil(60, -10);
+  pop();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function mousePressed() {
+  velasEncendidas = !velasEncendidas;
+}
+
+// --- ANIMACIÓN DE CAÍDA DE FLORES ---
+function dibujarFloresCayendo() {
+  for (let f of floresCayendo) {
+    // Actualizar posición y rotación
+    f.y += f.velocidadY;
+    f.x += sin(frameCount * 0.02 + f.oscilacion) * 0.8 + f.velocidadX;
+    f.rotacion += f.velocidadRotacion;
+
+    // Reiniciar flor al llegar al fondo
+    if (f.y > height + 20) {
+      f.y = -20;
+      f.x = random(width);
+    }
+
+    // Dibujar la flor cayendo
+    push();
+    translate(f.x, f.y);
+    rotate(f.rotacion);
+    noStroke();
+    
+    // Pétalos naranja brillante
+    fill(255, 130, 0);
+    for (let i = 0; i < 10; i++) {
+      rotate(PI / 5);
+      ellipse(f.tamano * 0.4, 0, f.tamano * 0.7, f.tamano * 0.4);
+    }
+    // Centro rojo/naranja oscuro
+    fill(200, 60, 0);
+    ellipse(0, 0, f.tamano * 0.35, f.tamano * 0.35);
+    pop();
+  }
+}
+
+// --- VELAS MULTICOLOR ---
+function dibujarVela(x, y, colorCuerpo) {
+  push();
+  translate(x, y);
+  
+  // Cuerpo principal de la vela
+  fill(colorCuerpo);
+  rectMode(CENTER);
+  rect(0, 0, 22, 55, 4);
+  
+  // Detalle: Gotas de cera derretida
+  fill(red(colorCuerpo) * 0.8, green(colorCuerpo) * 0.8, blue(colorCuerpo) * 0.8);
+  ellipse(-6, -15, 6, 12);
+  ellipse(5, -10, 5, 10);
+  
+  // Pabilo
+  stroke(30);
+  strokeWeight(2);
+  line(0, -27, 0, -33);
+
+  // Flama animada
+  if (velasEncendidas) {
+    push();
+    translate(0, -38); 
+    // Desfase en el pulso para que no parpadeen todas al mismo tiempo
+    let pulso = 1 + sin(frameCount * 0.18 + x) * 0.15;
+    scale(pulso); 
+    
+    noStroke();
+    fill(255, 100, 0, 200); // Aura exterior
+    ellipse(0, -10, 18, 32);
+    fill(255, 230, 80, 250); // Núcleo brillante
+    ellipse(0, -10, 9, 18);
+    pop();
+  }
+  pop();
+}
+
+function dibujarEscalones() {
+  push();
+  rectMode(CENTER);
+  noStroke();
+
+  // Nivel 3 (Superior)
+  fill(180, 20, 80);
+  rect(0, -180, 250, 80);
+  dibujarPapelPicado(0, -140, 250, color(255, 150, 0));
+
+  // Nivel 2 (Medio)
+  fill(80, 20, 150);
+  rect(0, -100, 350, 80);
+  dibujarPapelPicado(0, -60, 350, color(50, 200, 100));
+
+  // Nivel 1 (Inferior)
+  fill(220, 90, 0);
+  rect(0, -20, 450, 80);
+  dibujarPapelPicado(0, 20, 450, color(0, 150, 255));
+  pop();
+}
+
+function dibujarPapelPicado(x, y, ancho, colorPapel) {
+  push();
+  translate(x, y);
+  fill(colorPapel);
+  
+  let viento = sin(frameCount * 0.05) * 2;
+  rectMode(CENTER);
+  for(let i = -ancho/2 + 25; i < ancho/2; i += 50) {
+    rect(i, 15 + viento, 45, 30, 2);
+    fill(20, 10, 30);
+    triangle(i, 30 + viento, i - 10, 15 + viento, i + 10, 15 + viento);
+    fill(colorPapel); 
+  }
+  pop();
+}
+
+function dibujarCalaveraTradicional(x, y) {
+  push();
+  translate(x, y);
+
+  fill(250);
+  ellipse(0, -20, 100, 90);
+  rectMode(CENTER);
+  rect(0, 20, 50, 35, 10);
+
+  stroke(100);
+  strokeWeight(2);
+  line(-20, 20, 20, 20);
+  for(let i = -15; i <= 15; i += 10) { line(i, 10, i, 30); }
+
+  fill(0);
+  noStroke();
+  triangle(0, -5, -8, 5, 8, 5);
+
+  push();
+  translate(-20, -25);
+  rotate(frameCount * 0.02);
+  dibujarOjoDecorado();
+  pop();
+
+  push();
+  translate(20, -25);
+  rotate(frameCount * -0.02);
+  dibujarOjoDecorado();
+  pop();
+
+  fill(0, 200, 255);
+  ellipse(0, -45, 15, 15);
+  fill(255, 100, 0);
+  ellipse(-20, -50, 10, 10);
+  ellipse(20, -50, 10, 10);
+  pop();
+}
+
+function dibujarOjoDecorado() {
+  fill(0);
+  ellipse(0, 0, 35, 35); 
+  fill(255, 50, 150); 
+  for (let i = 0; i < 6; i++) {
+    rotate(PI / 3);
+    ellipse(10, 0, 15, 8);
+  }
+  fill(255, 200, 0); 
+  ellipse(0, 0, 10, 10);
+}
+
+function dibujarPanDeMuerto(x, y) {
+  push();
+  translate(x, y);
+  noStroke();
+  
+  fill(160, 80, 20);
+  ellipse(0, 0, 70, 40);
+  
+  fill(180, 100, 30);
+  push();
+  rotate(PI/4);
+  ellipse(0, 0, 60, 12);
+  pop();
+  push();
+  rotate(-PI/4);
+  ellipse(0, 0, 60, 12);
+  pop();
+  
+  ellipse(0, -10, 18, 18);
+  pop();
+}
+
+function dibujarFlorCempasuchil(x, y) {
+  push();
+  translate(x, y);
+  noStroke();
+  fill(255, 120, 0);
+  for (let i = 0; i < 12; i++) {
+    rotate(PI / 6);
+    ellipse(15, 0, 20, 15);
+  }
+  fill(200, 60, 0);
+  ellipse(0, 0, 15, 15);
+  pop();
+}
+
+function dibujarRetrato(x, y) {
+  push();
+  translate(x, y);
+  rectMode(CENTER);
+  fill(100, 50, 20);
+  rect(0, 0, 60, 80, 5);
+  fill(200, 150, 50);
+  rect(0, 0, 50, 70);
+  fill(220);
+  rect(0, 0, 40, 60);
+  fill(50);
+  ellipse(0, -10, 20, 20);
+  ellipse(0, 20, 35, 30);
+  pop();
+}
+
+function dibujarCopal(x, y) {
+  push();
+  translate(x, y);
+  noStroke();
+  fill(130, 60, 30);
+  ellipse(0, 10, 40, 20);
+  rectMode(CENTER);
+  rect(0, 5, 20, 15);
+  
+  if (velasEncendidas) {
+    fill(200, 200, 200, 80);
+    let ascenso = (frameCount * 0.5) % 40;
+    let oscilacion = sin(frameCount * 0.1) * 10;
+    ellipse(oscilacion, -ascenso, 15 + ascenso/2, 15 + ascenso/2);
+    
+    let ascenso2 = ((frameCount+40) * 0.5) % 40;
+    let oscilacion2 = sin((frameCount+40) * 0.1) * 10;
+    ellipse(-oscilacion2, -ascenso2 - 10, 10 + ascenso2/2, 10 + ascenso2/2);
+  }
+  pop();
+}
+
+function dibujarTequila(x, y) {
+  push();
+  translate(x, y);
+  noStroke();
+  fill(150, 200, 150, 200);
+  rectMode(CENTER);
+  rect(0, 10, 25, 40, 3);
+  rect(0, -15, 10, 15);
+  fill(250);
+  rect(0, 15, 20, 15);
+  fill(200, 0, 0);
+  ellipse(0, 15, 5, 5);
+  fill(200, 200, 255, 150);
+  quad(15, 25, 25, 25, 23, 30, 17, 30);
+  pop();
+}
+
+function dibujarVasoAgua(x, y) {
+  push();
+  translate(x, y);
+  noStroke();
+  fill(200, 220, 255, 100);
+  rectMode(CENTER);
+  rect(0, 0, 25, 35, 2);
+  fill(50, 150, 255, 180);
+  rect(0, 5, 21, 20);
+  pop();
+}
+
+function dibujarCruzSal(x, y) {
+  push();
+  translate(x, y);
+  noStroke();
+  fill(150, 80, 40);
+  ellipse(0, 5, 40, 15);
+  fill(255);
+  rectMode(CENTER);
+  rect(0, 0, 8, 25);
+  rect(0, 0, 20, 8);
+  pop();
+}
+
+function dibujarCaminoPetalos() {
+  push();
+  noStroke();
+  fill(255, 120, 0);
+  for(let p of petalosSuelo) {
+    ellipse(p.x, p.y, p.tam, p.tam * 0.6);
+  } 
+}
